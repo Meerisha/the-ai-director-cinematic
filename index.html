@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="THE AI DIRECTOR — Master Midjourney, Runway, Sora &amp; Pika. Build a content studio that runs while you sleep." />
+  <title>THE AI DIRECTOR — You Don't Need a Camera. You Need a Vision.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080808;
+      --gold: #D4A843;
+      --red: #C0392B;
+      --white: #F0EDE6;
+      --gray: #2A2A2A;
+      --accent: #E8D5A3;
+      --card: #1A1A1A;
+      --screening: #111111;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body: "Karla", sans-serif;
+      --cursor: 20px;
+      --cursor-hover: 30px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .grain::after,.hero-glow,.marquee-track,.shimmer::after,.curtain{animation:none!important}
+      .reveal{opacity:1!important;transform:none!important;transition:none!important}
+      .hl1 span,.hl2 span,.hl3,.hero-sub{opacity:1!important;transform:none!important;animation:none!important}
+    }
+    body{margin:0;background:var(--bg);color:var(--white);font-family:var(--font-body);font-size:1rem;line-height:1.6;overflow-x:hidden;cursor:none}
+    @media (pointer:coarse){body{cursor:auto}.cursor{display:none!important}}
+    a:focus-visible,button:focus-visible,.faq-q:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    .grain{pointer-events:none;position:fixed;inset:0;z-index:9996;opacity:.04;mix-blend-mode:overlay}
+    .grain::after{content:"";position:absolute;inset:-100%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain-shift 8s steps(10) infinite}
+    @keyframes grain-shift{0%,100%{transform:translate(0,0)}50%{transform:translate(-2%,1%)}}
+    .cursor{pointer-events:none;position:fixed;z-index:9999;left:0;top:0;width:var(--cursor);height:var(--cursor);margin:calc(var(--cursor)/-2) 0 0 calc(var(--cursor)/-2);border:1.5px solid var(--accent);border-radius:50%;opacity:0;transition:width .3s var(--ease-out-expo),height .3s var(--ease-out-expo),margin .3s var(--ease-out-expo),border-color .25s ease,opacity .35s ease}
+    .cursor.on{opacity:.92}
+    .cursor.hover{width:var(--cursor-hover);height:var(--cursor-hover);margin:calc(var(--cursor-hover)/-2) 0 0 calc(var(--cursor-hover)/-2)}
+    .cursor.cta{border-color:var(--gold)}
+    .curtain{position:fixed;inset:0;background:#000;z-index:10000;pointer-events:none;opacity:1;transition:opacity 1.1s var(--ease-out-expo)}
+    .curtain.done{opacity:0}
+    .wrap{max-width:1140px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2.25rem)}
+    .site-header{position:fixed;inset:0 0 auto;z-index:900;padding:.85rem 0;background:rgba(8,8,8,0);border-bottom:1px solid transparent;transition:background .4s ease,border-color .4s ease,backdrop-filter .4s ease}
+    .site-header.is-scrolled{background:var(--bg);border-bottom:1px solid var(--gold);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    .nav-row{max-width:1140px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2.25rem);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .logo{display:flex;align-items:baseline;gap:.35rem;text-decoration:none;font-family:var(--font-display);font-weight:600;font-size:clamp(.85rem,2.2vw,1rem);letter-spacing:.28em;text-transform:uppercase;border:none;background:none;padding:0;cursor:none}
+    @media (pointer:coarse){.logo{cursor:pointer}}
+    .logo-gold{color:var(--gold);letter-spacing:.32em}
+    .logo-white{color:var(--white);letter-spacing:.38em}
+    .nav-links{display:flex;gap:1.75rem;align-items:center}
+    .nav-links a{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,237,230,.62);text-decoration:none;transition:color .25s ease}
+    .nav-links a:hover{color:var(--accent)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border:0;cursor:none;transition:transform .35s var(--ease-out-expo),opacity .25s ease,background .25s ease,color .25s ease,border-color .25s ease,box-shadow .35s ease}
+    @media (pointer:coarse){.btn{cursor:pointer}}
+    .btn:active{transform:translateY(1px)}
+    .btn-action{background:var(--red);color:var(--white);padding:.85rem 1.15rem;border-radius:0}
+    .btn-action:hover{filter:brightness(1.06)}
+    .btn-gold{background:var(--gold);color:var(--bg);padding:1rem 1.75rem;border-radius:0}
+    .btn-gold:hover{background:var(--accent)}
+    .btn-outline-gold{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:1rem 1.35rem;border-radius:0}
+    .btn-outline-gold:hover{color:var(--accent);border-color:var(--accent)}
+    .btn-outline-warm{background:transparent;color:var(--white);border:1px solid rgba(240,237,230,.35);padding:1rem 1.35rem;border-radius:0}
+    .btn-outline-warm:hover{border-color:var(--gold);color:var(--accent)}
+    .burger{display:none;flex-direction:column;gap:6px;width:40px;height:40px;align-items:center;justify-content:center;background:transparent;border:1px solid rgba(240,237,230,.2);border-radius:0;padding:0;cursor:none}
+    @media (pointer:coarse){.burger{cursor:pointer}}
+    .burger span{display:block;width:20px;height:2px;background:var(--white);transition:transform .35s var(--ease-out-expo),opacity .25s ease}
+    .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+    .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+    .mobile-panel{position:fixed;inset:0;top:64px;background:rgba(8,8,8,.97);border-top:1px solid rgba(212,168,67,.25);padding:1.5rem;display:none;flex-direction:column;gap:1rem;z-index:899}
+    .mobile-panel.open{display:flex}
+    .mobile-panel a{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--white);text-decoration:none;padding:.5rem 0;border-bottom:1px solid rgba(240,237,230,.08)}
+    @media (max-width:1024px){
+      .nav-links{display:none}
+      .burger{display:flex}
+    }
+    @media (min-width:1025px){
+      .mobile-panel{display:none!important}
+    }
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:6.5rem 0 5.5rem;position:relative;overflow:hidden}
+    .hero-glow{pointer-events:none;position:absolute;inset:-20%;background:radial-gradient(circle at 50% 42%,rgba(212,168,67,.22) 0%,transparent 55%);opacity:.85;animation:glow-pulse 9s ease-in-out infinite}
+    @keyframes glow-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.06)}}
+    .hero-inner{position:relative;z-index:2}
+    .hl1{font-size:clamp(.78rem,1.6vw,.95rem);letter-spacing:.3em;text-transform:uppercase;color:rgba(240,237,230,.88);margin:0 0 .75rem}
+    .hl1 span{display:inline-block;opacity:0;transform:translateY(22px)}
+    .curtain.done~main .hl1 span,.no-curtain .hl1 span{animation:drop-in .85s var(--ease-out-expo) forwards}
+    .hl1 span:nth-child(1){animation-delay:.15s}.hl1 span:nth-child(2){animation-delay:.28s}.hl1 span:nth-child(3){animation-delay:.41s}
+    .hl2{font-family:var(--font-display);font-size:clamp(4rem,14vw,7.5rem);line-height:.92;margin:0;color:var(--gold);font-style:italic;font-weight:500;letter-spacing:-.02em}
+    .hl2 span{display:inline-block;opacity:0;transform:translateY(40px)}
+    .curtain.done~main .hl2 span,.no-curtain .hl2 span{animation:drop-in 1s var(--ease-out-expo) forwards;animation-delay:.55s}
+    .hl3{font-family:var(--font-body);font-size:clamp(1.05rem,2.4vw,1.35rem);font-style:italic;color:var(--white);margin:.75rem 0 0;opacity:0;transform:translateY(18px)}
+    .curtain.done~main .hl3,.no-curtain .hl3{animation:fade-up .9s var(--ease-out-expo) .95s forwards}
+    .hero-sub{max-width:38rem;margin:1.75rem 0 0;color:rgba(240,237,230,.68);font-weight:300;opacity:0;transform:translateY(20px)}
+    .curtain.done~main .hero-sub,.no-curtain .hero-sub{animation:fade-up .95s var(--ease-out-expo) 1.35s forwards}
+    .hero-ctas{display:flex;flex-direction:column;align-items:flex-start;gap:.85rem;margin-top:2rem}
+    @keyframes drop-in{to{opacity:1;transform:translateY(0)}}
+    @keyframes fade-up{to{opacity:1;transform:translateY(0)}}
+    .marquee-wrap{margin-top:auto;padding-top:3rem;border-top:1px solid rgba(240,237,230,.08);overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent)}
+    .marquee-track{display:flex;width:max-content;gap:3rem;animation:marquee 38s linear infinite;will-change:transform}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    .marquee-item{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(240,237,230,.45);white-space:nowrap;border:1px solid rgba(212,168,67,.25);padding:.55rem 1rem;background:rgba(26,26,26,.6)}
+    .cred{background:var(--bg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:clamp(2.5rem,6vw,3.5rem) 0}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center}
+    .stat{padding:1rem .75rem;border-right:1px solid rgba(212,168,67,.22)}
+    .stat:last-child{border-right:0}
+    .stat-num{font-family:var(--font-display);font-size:clamp(1.85rem,4vw,2.6rem);color:var(--gold);font-weight:600;display:block}
+    .stat-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.5);margin-top:.35rem}
+    @media (max-width:768px){.stats{grid-template-columns:1fr 1fr}.stat{border-right:0;border-bottom:1px solid rgba(212,168,67,.15)}.stat:nth-child(2n){border-left:1px solid rgba(212,168,67,.15)}}
+    .logo-strip{margin-top:2rem;overflow:hidden;border:1px solid rgba(240,237,230,.06);background:rgba(17,17,17,.5)}
+    .logo-strip-track{display:flex;gap:2.5rem;width:max-content;padding:.85rem 0;animation:marquee 48s linear infinite;will-change:transform}
+    .logo-strip span{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,237,230,.38);white-space:nowrap}
+    .method{padding:clamp(4rem,9vw,6.5rem) 0}
+    .sec-k{font-size:.65rem;letter-spacing:.26em;text-transform:uppercase;color:var(--red);margin:0 0 .6rem}
+    .sec-h{font-family:var(--font-display);font-size:clamp(2rem,4.6vw,3.1rem);font-weight:500;margin:0 0 2.5rem;max-width:22ch}
+    .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
+    @media (max-width:1024px){.acts{grid-template-columns:1fr}}
+    .act{position:relative;padding:2rem 1.75rem;background:rgba(26,26,26,.35);border-left:1px solid var(--gold);min-height:280px}
+    .act::before{content:attr(data-roman);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:clamp(5rem,14vw,8rem);font-weight:700;color:rgba(212,168,67,.08);pointer-events:none;line-height:1}
+    .act::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease-out-expo)}
+    .act:hover::after{transform:scaleX(1)}
+    .act-dash{display:none}
+    .act h3{font-family:var(--font-display);font-size:1.55rem;color:var(--gold);margin:0 0 .75rem;position:relative}
+    .act p{margin:0;color:rgba(240,237,230,.65);font-weight:300;position:relative;max-width:34ch}
+    .catalog{padding:clamp(4rem,9vw,6.5rem) 0;background:linear-gradient(180deg,rgba(17,17,17,.35) 0%,transparent 100%)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    @media (max-width:768px){.grid2{grid-template-columns:1fr}}
+    .course{background:var(--card);padding:1.75rem 1.5rem 1.5rem;border:1px solid rgba(240,237,230,.06);border-top:3px solid var(--gold);transition:transform .45s var(--ease-out-expo),box-shadow .45s ease}
+    .course:hover{transform:translateY(-6px);box-shadow:0 18px 50px rgba(212,168,67,.12)}
+    .course-tag{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--red);color:var(--white);padding:.28rem .55rem;margin-bottom:1rem}
+    .course h4{font-family:var(--font-display);font-size:1.45rem;margin:0 0 .65rem;color:var(--white)}
+    .course p{margin:0 0 1.25rem;color:rgba(240,237,230,.62);font-weight:300;font-size:.95rem}
+    .course a{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);text-decoration:none}
+    .course a:hover{color:var(--accent)}
+    .profiles{padding:clamp(4rem,9vw,6.5rem) 0;background:radial-gradient(120% 80% at 80% 0%,rgba(212,168,67,.05) 0%,transparent 50%),var(--bg);position:relative;overflow:hidden}
+    .profiles::before,.profiles::after{content:"";position:absolute;width:140%;height:1px;background:repeating-linear-gradient(90deg,rgba(212,168,67,.25) 0 14px,transparent 14px 28px);opacity:.25;transform:rotate(-8deg);pointer-events:none}
+    .profiles::before{top:12%;left:-20%}
+    .profiles::after{bottom:18%;left:-20%;transform:rotate(7deg)}
+    .prof-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    @media (max-width:1024px){.prof-row{grid-template-columns:1fr}}
+    .prof{text-align:center;padding:1.5rem;border:1px solid rgba(240,237,230,.06);background:rgba(26,26,26,.4)}
+    .avatar{width:min(180px,52vw);height:min(180px,52vw);margin:0 auto 1rem;border-radius:50%;background:conic-gradient(from 210deg,rgba(212,168,67,.25),rgba(8,8,8,.9),rgba(192,57,43,.2));position:relative;overflow:hidden;border:1px solid rgba(212,168,67,.35)}
+    .avatar::after{content:"";position:absolute;inset:0;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");mix-blend-mode:overlay;pointer-events:none}
+    .prof h4{font-family:var(--font-display);color:var(--gold);font-size:1.35rem;margin:0 0 .35rem}
+    .prof .role{font-size:.88rem;color:rgba(240,237,230,.75);margin:0 0 1rem}
+    .prof .known{font-size:.78rem;color:rgba(240,237,230,.55);margin:0 0 .75rem}
+    .badge{display:inline-block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .6rem;border:1px solid rgba(212,168,67,.4);color:var(--accent)}
+    .screening{background:var(--screening);padding:clamp(4rem,9vw,6.5rem) 0;position:relative}
+    .qmark{font-family:var(--font-display);font-size:clamp(4rem,12vw,7.5rem);line-height:.7;color:var(--gold);margin:0 0 .5rem}
+    .quote{font-family:var(--font-body);font-size:clamp(1.05rem,2.2vw,1.25rem);font-style:italic;color:var(--white);max-width:52ch;margin:0 0 1.25rem}
+    .who{font-size:.82rem;color:rgba(240,237,230,.55);margin:0 0 .75rem}
+    .stars{color:var(--gold);letter-spacing:.15em;font-size:1rem}
+    .dots{display:flex;justify-content:center;gap:.65rem;margin-top:2rem}
+    .dots button{width:12px;height:12px;border-radius:50%;border:1px solid rgba(212,168,67,.5);background:transparent;padding:0;cursor:none}
+    @media (pointer:coarse){.dots button{cursor:pointer}}
+    .dots button[aria-current="true"]{background:var(--gold);border-color:var(--gold)}
+    .pricing-sec{padding:clamp(4rem,9vw,6.5rem) 0;background:linear-gradient(180deg,rgba(42,42,42,.25) 0%,rgba(8,8,8,.9) 100%);position:relative}
+    .pricing-sec::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;opacity:.6}
+    .toggle-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:center;margin:0 0 2.5rem}
+    .toggle{display:inline-flex;border:1px solid rgba(212,168,67,.35);border-radius:0;overflow:hidden}
+    .toggle button{font-family:var(--font-body);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:.65rem 1.1rem;border:0;background:transparent;color:rgba(240,237,230,.55);cursor:none}
+    @media (pointer:coarse){.toggle button{cursor:pointer}}
+    .toggle button[aria-pressed="true"]{background:rgba(212,168,67,.15);color:var(--gold)}
+    .save{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+    .price-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:1.5rem;align-items:stretch}
+    @media (max-width:900px){.price-grid{grid-template-columns:1fr}}
+    .tier{background:var(--card);border:1px solid rgba(240,237,230,.08);padding:2rem 1.75rem;border-radius:0;position:relative}
+    .tier-pro{border:1px solid rgba(212,168,67,.55);box-shadow:0 0 0 1px rgba(212,168,67,.2),0 25px 80px rgba(212,168,67,.08);min-height:520px}
+    .tape{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:var(--white);font-size:.58rem;font-weight:800;letter-spacing:.2em;padding:.45rem .9rem;clip-path:polygon(4% 0,96% 0,100% 50%,96% 100%,4% 100%,0 50%)}
+    .tier h3{font-family:var(--font-display);font-size:1.85rem;margin:.5rem 0 .25rem;color:var(--white)}
+    .tier-free{font-size:.55em;font-weight:400;color:rgba(240,237,230,.45);letter-spacing:.08em}
+    .tier .tagline{color:rgba(240,237,230,.55);font-size:.9rem;margin:0 0 1.25rem;font-style:italic;font-family:var(--font-display)}
+    .tier ul{list-style:none;margin:0 0 1.75rem;padding:0}
+    .tier li{padding:.55rem 0;border-bottom:1px solid rgba(240,237,230,.06);padding-left:1.35rem;position:relative;color:rgba(240,237,230,.72);font-size:.92rem}
+    .tier li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+    .price-big{font-family:var(--font-display);font-size:2.75rem;color:var(--gold);margin:0 0 1rem}
+    .faq{padding:clamp(4rem,9vw,6rem) 0}
+    .faq-item{border-bottom:1px solid rgba(240,237,230,.1)}
+    .faq-q{width:100%;text-align:left;background:none;border:0;color:var(--gold);font-family:var(--font-display);font-size:clamp(1.05rem,2.2vw,1.35rem);padding:1.25rem 2.5rem 1.25rem 0;cursor:none;position:relative;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    @media (pointer:coarse){.faq-q{cursor:pointer}}
+    .faq-icon{font-family:var(--font-body);font-size:1.5rem;color:var(--red);width:2rem;text-align:center;transition:transform .35s var(--ease-out-expo)}
+    .faq-item.open .faq-icon{transform:rotate(45deg)}
+    .faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease-out-expo)}
+    .faq-item.open .faq-a{grid-template-rows:1fr}
+    .faq-a-inner{overflow:hidden}
+    .faq-a p{margin:0 0 1.25rem;padding-right:1rem;color:var(--white);font-weight:300;max-width:62ch}
+    .final{position:relative;text-align:center;padding:clamp(4.5rem,12vw,7rem) 1.5rem;overflow:hidden;border-top:1px solid rgba(212,168,67,.2);border-bottom:1px solid rgba(212,168,67,.2)}
+    .final .hero-glow{opacity:.7}
+    .final h2{font-family:var(--font-display);font-size:clamp(2.4rem,6vw,3.8rem);margin:0 0 .75rem;position:relative;z-index:1}
+    .final p{margin:0 auto 2rem;max-width:36ch;color:rgba(240,237,230,.62);position:relative;z-index:1}
+    .btn-massive{font-size:.78rem;padding:1.25rem clamp(2rem,8vw,4rem);position:relative;overflow:hidden;z-index:1}
+    .shimmer{position:relative}
+    .shimmer::after{content:"";position:absolute;inset:0;left:-40%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.22) 50%,transparent 60%);transform:translateX(-120%);transition:transform .6s ease}
+    .shimmer:hover::after{transform:translateX(120%)}
+    .fine{font-size:.75rem;color:rgba(240,237,230,.45);margin-top:1.25rem;position:relative;z-index:1}
+    footer{padding:0 0 2.5rem;background:var(--bg)}
+    .foot-strip{height:10px;background:repeating-linear-gradient(90deg,rgba(212,168,67,.45) 0 12px,var(--bg) 12px 22px);opacity:.55}
+    .foot-top{padding-top:1.75rem;margin-top:0}
+    .foot-grid{display:grid;grid-template-columns:1.1fr repeat(3,1fr);gap:2rem;align-items:start;padding-top:2rem}
+    @media (max-width:768px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
+    .foot-brand .logo{pointer-events:none}
+    .foot-col h5{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,237,230,.45);margin:0 0 1rem}
+    .foot-col a{display:block;font-size:.82rem;color:rgba(240,237,230,.6);text-decoration:none;margin:.45rem 0}
+    .foot-col a:hover{color:var(--accent)}
+    .social{display:flex;gap:.75rem;margin-top:1rem}
+    .social a{display:inline-flex;width:40px;height:40px;align-items:center;justify-content:center;border:1px solid rgba(240,237,230,.15);color:var(--white);transition:border-color .25s ease,color .25s ease}
+    .social a:hover{border-color:var(--gold);color:var(--gold)}
+    .foot-bar{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid rgba(240,237,230,.08);font-size:.72rem;color:rgba(240,237,230,.4)}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .85s var(--ease-out-expo),transform .85s var(--ease-out-expo)}
+    .reveal.in{opacity:1;transform:translateY(0)}
+    main{position:relative;z-index:1}
+    .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+  <div class="curtain" id="curtain" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <header class="site-header" id="site-header">
+    <div class="nav-row">
+      <button type="button" class="logo" id="logo" aria-label="THE AI DIRECTOR home">
+        <span class="logo-gold">THE AI</span>
+        <span class="logo-white">DIRECTOR</span>
+      </button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#method">Method</a>
+        <a href="#courses">Courses</a>
+        <a href="#results">Results</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <a class="btn btn-action is-cta" href="#final">Action!</a>
+      <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-panel">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-panel" id="mobile-panel" hidden>
+      <a href="#method">Method</a>
+      <a href="#courses">Courses</a>
+      <a href="#results">Results</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn btn-action is-cta" href="#final" style="margin-top:.5rem;text-align:center">Action!</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" id="top" aria-label="Hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="hl1" aria-hidden="true"><span>YOU</span> <span>ARE</span> <span>THE</span></p>
+        <h1 class="hl2"><span>DIRECTOR.</span></h1>
+        <p class="hl3">AI is your crew.</p>
+        <p class="hero-sub">Master Midjourney, Runway, Sora &amp; Pika. Build a content studio that runs while you sleep.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-gold is-hover is-cta" href="#pricing">Call ACTION →</a>
+          <a class="btn btn-outline-gold is-hover" href="#screening">Watch the Reel ▶</a>
+        </div>
+      </div>
+      <div class="marquee-wrap" aria-hidden="true">
+        <div class="marquee-track" id="marquee-hero">
+          <span class="marquee-item">Midjourney</span><span class="marquee-item">Runway</span><span class="marquee-item">Sora</span><span class="marquee-item">Pika</span><span class="marquee-item">Kling</span><span class="marquee-item">Flux</span><span class="marquee-item">Firefly</span><span class="marquee-item">ElevenLabs</span>
+          <span class="marquee-item">Midjourney</span><span class="marquee-item">Runway</span><span class="marquee-item">Sora</span><span class="marquee-item">Pika</span><span class="marquee-item">Kling</span><span class="marquee-item">Flux</span><span class="marquee-item">Firefly</span><span class="marquee-item">ElevenLabs</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cred" id="results" aria-labelledby="cred-heading">
+      <div class="wrap">
+        <h2 id="cred-heading" class="visually-hidden">The credibility reel</h2>
+        <div class="stats" role="list">
+          <div class="stat reveal" role="listitem">
+            <span class="stat-num" data-count="12400" data-suffix="+">0</span>
+            <span class="stat-label">Directors Trained</span>
+          </div>
+          <div class="stat reveal" role="listitem">
+            <span class="stat-num" data-count="63" data-suffix="">0</span>
+            <span class="stat-label">Cinematic Courses</span>
+          </div>
+          <div class="stat reveal" role="listitem">
+            <span class="stat-num" data-count="4.9" data-decimals="1" data-suffix="★">0</span>
+            <span class="stat-label">Average Rating</span>
+          </div>
+          <div class="stat reveal" role="listitem">
+            <span class="stat-num" data-count="0" data-prefix="$">$0</span>
+            <span class="stat-label">to Enroll</span>
+          </div>
+        </div>
+        <div class="logo-strip" aria-hidden="true">
+          <div class="logo-strip-track">
+            <span>OpenAI</span><span>Adobe</span><span>Runway</span><span>Midjourney</span><span>Pika</span><span>Kling</span><span>ElevenLabs</span><span>Suno</span><span>Luma</span><span>Flux</span>
+            <span>OpenAI</span><span>Adobe</span><span>Runway</span><span>Midjourney</span><span>Pika</span><span>Kling</span><span>ElevenLabs</span><span>Suno</span><span>Luma</span><span>Flux</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="method wrap" id="method" aria-labelledby="method-h">
+      <p class="sec-k reveal">The Method</p>
+      <h2 class="sec-h reveal" id="method-h">Every Great Film Has Three Acts.</h2>
+      <div class="acts">
+        <article class="act reveal" data-roman="I" style="animation-delay:0ms">
+          <h3>Act I — VISION</h3>
+          <p>Learn to prompt like a director. Concept, mood, lighting, composition — all in words.</p>
+        </article>
+        <article class="act reveal" data-roman="II" style="animation-delay:60ms">
+          <h3>Act II — PRODUCTION</h3>
+          <p>Master the AI tools. Generate stills, animate scenes, add voice, score your content.</p>
+        </article>
+        <article class="act reveal" data-roman="III" style="animation-delay:120ms">
+          <h3>Act III — DISTRIBUTION</h3>
+          <p>Publish, monetize, and build an audience that pays you.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="catalog wrap" id="courses" aria-labelledby="cat-h">
+      <p class="sec-k reveal">Course Catalog</p>
+      <h2 class="sec-h reveal" id="cat-h">Your Slate. Pick Your First Project.</h2>
+      <div class="grid2">
+        <article class="course reveal">
+          <span class="course-tag">Still Photography</span>
+          <h4>🎬 Directing with Midjourney</h4>
+          <p>Master cinematic stills — lighting, mood, character.</p>
+          <a href="#pricing">Enter Set →</a>
+        </article>
+        <article class="course reveal">
+          <span class="course-tag">Motion</span>
+          <h4>🎥 AI Video Direction — Runway &amp; Sora</h4>
+          <p>Scene transitions, motion, storytelling in motion.</p>
+          <a href="#pricing">Enter Set →</a>
+        </article>
+        <article class="course reveal">
+          <span class="course-tag">Audio Post</span>
+          <h4>🎙️ Sound &amp; Score with AI</h4>
+          <p>ElevenLabs voiceover, Suno music, full post-production.</p>
+          <a href="#pricing">Enter Set →</a>
+        </article>
+        <article class="course reveal">
+          <span class="course-tag">Business</span>
+          <h4>💰 Monetize the Studio</h4>
+          <p>Sell AI content, freelance, digital products, licensing.</p>
+          <a href="#pricing">Enter Set →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="profiles" id="directors" aria-labelledby="prof-h">
+      <div class="wrap">
+        <p class="sec-k reveal">Director Profiles</p>
+        <h2 class="sec-h reveal" id="prof-h">Learn From Working Directors.</h2>
+        <div class="prof-row">
+          <article class="prof reveal">
+            <div class="avatar" aria-hidden="true"></div>
+            <h4>Elena Vance</h4>
+            <p class="role">AI Cinematography</p>
+            <p class="known">Known for: viral spec trailers for streamers.</p>
+            <span class="badge">820K audience</span>
+          </article>
+          <article class="prof reveal">
+            <div class="avatar" aria-hidden="true"></div>
+            <h4>Marcus Hale</h4>
+            <p class="role">Motion &amp; Sound</p>
+            <p class="known">Known for: award‑shortlisted branded shorts.</p>
+            <span class="badge">540K subscribers</span>
+          </article>
+          <article class="prof reveal">
+            <div class="avatar" aria-hidden="true"></div>
+            <h4>Sofia Reyes</h4>
+            <p class="role">Monetization Systems</p>
+            <p class="known">Known for: six‑figure AI studio retainers.</p>
+            <span class="badge">310K followers</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screening wrap" id="screening" aria-labelledby="screen-h">
+      <p class="sec-k reveal">The Screening Room</p>
+      <h2 class="sec-h reveal" id="screen-h">From the Audience.</h2>
+      <div class="carousel reveal" id="carousel" aria-roledescription="carousel" aria-label="Student testimonials">
+        <div class="slide active" role="group" aria-roledescription="slide" aria-label="1 of 5" aria-hidden="false">
+          <div class="qmark" aria-hidden="true">“</div>
+          <p class="quote">I went from guessing prompts to pitching treatments clients actually buy.</p>
+          <p class="who"><strong>Jordan Lee</strong> — Before: barista → Now: $4.5K/mo AI studio</p>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 5" aria-hidden="true">
+          <div class="qmark" aria-hidden="true">“</div>
+          <p class="quote">Runway + sound design modules felt like film school without the gatekeeping.</p>
+          <p class="who"><strong>Avery Kim</strong> — Before: freelance editor → Now: retained by two brands</p>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 5" aria-hidden="true">
+          <div class="qmark" aria-hidden="true">“</div>
+          <p class="quote">The distribution act alone paid for the year — templates, outreach, pricing.</p>
+          <p class="who"><strong>Dev Malik</strong> — Before: side hustle → Now: $7K project sprint</p>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="4 of 5" aria-hidden="true">
+          <div class="qmark" aria-hidden="true">“</div>
+          <p class="quote">Finally a curriculum that treats AI as crew, not a slot machine.</p>
+          <p class="who"><strong>Riley Ortiz</strong> — Before: content intern → Now: lead creative</p>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        </div>
+        <div class="slide" role="group" aria-roledescription="slide" aria-label="5 of 5" aria-hidden="true">
+          <div class="qmark" aria-hidden="true">“</div>
+          <p class="quote">My portfolio looks like a reel — not a folder of happy accidents.</p>
+          <p class="who"><strong>Sam Ng</strong> — Before: hobbyist → Now: licensed asset income</p>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="dots" id="dots" role="tablist" aria-label="Choose testimonial"></div>
+    </section>
+
+    <section class="pricing-sec wrap" id="pricing" aria-labelledby="price-h">
+      <p class="sec-k reveal">Choose Your Role</p>
+      <h2 class="sec-h reveal" id="price-h">Every Director Starts Somewhere.</h2>
+      <div class="toggle-row reveal">
+        <div class="toggle" role="group" aria-label="Billing period">
+          <button type="button" id="bill-month" aria-pressed="true">Monthly</button>
+          <button type="button" id="bill-year" aria-pressed="false">Annual</button>
+        </div>
+        <span class="save" id="save-label">Save 42%</span>
+      </div>
+      <div class="price-grid">
+        <div class="tier reveal">
+          <h3>SLATE <span class="tier-free">(Free)</span></h3>
+          <p class="tagline">The Audition</p>
+          <p class="price-big" style="font-size:2.2rem">$0</p>
+          <ul>
+            <li>7 free lessons</li>
+            <li>Community forum access</li>
+            <li>Basic prompt library</li>
+          </ul>
+          <a class="btn btn-outline-gold is-hover" href="#final">Start Free</a>
+        </div>
+        <div class="tier tier-pro reveal">
+          <span class="tape">MOST POPULAR</span>
+          <h3>DIRECTOR'S CUT</h3>
+          <p class="tagline">Full Creative Control</p>
+          <p class="price-big" id="pro-price">$57<span style="font-size:1rem;color:rgba(240,237,230,.45)">/mo</span></p>
+          <ul>
+            <li>All 63 courses + new releases</li>
+            <li>Weekly live direction sessions</li>
+            <li>Private Discord with instructors</li>
+            <li>AI tool discounts &amp; API credits</li>
+            <li>Certificate of Completion</li>
+          </ul>
+          <a class="btn btn-gold is-hover is-cta" href="#final">Go Pro</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq wrap" id="faq" aria-labelledby="faq-h">
+      <p class="sec-k reveal">FAQ</p>
+      <h2 class="sec-h reveal" id="faq-h">Production Notes.</h2>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">Do I need any filmmaking experience?<span class="faq-icon" aria-hidden="true">+</span></button>
+          <div class="faq-a" id="faq-a1" role="region" aria-labelledby="faq-q1"><div class="faq-a-inner"><p>No — we teach the language of lenses and light, then map it to AI tools. If you can describe what you want to see, you can direct it.</p></div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">Which AI tools will I learn?<span class="faq-icon" aria-hidden="true">+</span></button>
+          <div class="faq-a" id="faq-a2" role="region" aria-labelledby="faq-q2"><div class="faq-a-inner"><p>Midjourney, Runway, Sora, Pika, Kling, Flux, Firefly, ElevenLabs, Suno, and the APIs that glue them into a studio pipeline.</p></div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">How fast can I start making money?<span class="faq-icon" aria-hidden="true">+</span></button>
+          <div class="faq-a" id="faq-a3" role="region" aria-labelledby="faq-q3"><div class="faq-a-inner"><p>Most students ship a paid spec within 6–10 weeks depending on pace. Monetization is a system — we give you the SOPs, not magic.</p></div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">Is this for photo, video, or both?<span class="faq-icon" aria-hidden="true">+</span></button>
+          <div class="faq-a" id="faq-a4" role="region" aria-labelledby="faq-q4"><div class="faq-a-inner"><p>Both. You’ll master cinematic stills first, then motion grammar, sound, and delivery specs for social, ads, and premium clients.</p></div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">What if I fall behind — lifetime access?<span class="faq-icon" aria-hidden="true">+</span></button>
+          <div class="faq-a" id="faq-a5" role="region" aria-labelledby="faq-q5"><div class="faq-a-inner"><p>Yes — your course library is yours to revisit. Office hours recordings land in Discord so you never miss a beat.</p></div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button type="button" class="faq-q" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">Can I cancel anytime?<span class="faq-icon" aria-hidden="true">+</span></button>
+          <div class="faq-a" id="faq-a6" role="region" aria-labelledby="faq-q6"><div class="faq-a-inner"><p>Monthly memberships cancel anytime. Annual plans are billed upfront for the discount — see terms for proration details.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" id="final" aria-labelledby="final-h">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="wrap">
+        <h2 id="final-h">The Set Is Ready.</h2>
+        <p>Your first AI-directed film starts today.</p>
+        <a class="btn btn-gold btn-massive shimmer is-hover is-cta" href="#pricing">CALL ACTION</a>
+        <p class="fine">Join 12,400+ directors. Free to start.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot-strip" aria-hidden="true"></div>
+    <div class="wrap foot-top">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="logo" aria-hidden="true"><span class="logo-gold">THE AI</span><span class="logo-white">DIRECTOR</span></div>
+          <p style="margin:.5rem 0 0;font-size:.85rem;color:rgba(240,237,230,.45);max-width:28ch">A premium school for directing AI photo &amp; video like it’s opening weekend.</p>
+          <div class="social" aria-label="Social media">
+            <a href="#" aria-label="TikTok" class="is-hover"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a>
+            <a href="#" aria-label="Instagram" class="is-hover"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="YouTube" class="is-hover"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1 31.7 31.7 0 0 0 .5-5.8 31.7 31.7 0 0 0-.5-5.8zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg></a>
+            <a href="#" aria-label="X" class="is-hover"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h5>Learn</h5>
+          <a href="#method">The Method</a>
+          <a href="#courses">Courses</a>
+          <a href="#screening">Stories</a>
+        </div>
+        <div class="foot-col">
+          <h5>Company</h5>
+          <a href="#">About</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+        </div>
+        <div class="foot-col">
+          <h5>Legal</h5>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <p class="foot-bar">© 2025 The AI Director. All scenes reserved.</p>
+    </div>
+  </footer>
+
+  <style>
+    .stat-num{font-variant-numeric:tabular-nums}
+    .carousel{min-height:300px}
+    .carousel .slide{position:absolute;left:0;right:0;top:0;padding:1rem 0;opacity:0;transform:translateY(12px);transition:opacity .65s ease,transform .65s cubic-bezier(0.16,1,0.3,1);pointer-events:none}
+    .carousel .slide.active{position:relative;opacity:1;transform:translateY(0);pointer-events:auto}
+  </style>
+  <script>
+(function(){
+  var reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var curtain=document.getElementById("curtain");
+  if(reduce){
+    document.documentElement.classList.add("no-curtain");
+    if(curtain){curtain.classList.add("done");curtain.style.opacity="0"}
+  }else if(curtain){
+    requestAnimationFrame(function(){
+      setTimeout(function(){curtain.classList.add("done");setTimeout(function(){curtain.style.display="none"},1200)},280);
+    });
+  }
+})();
+(function(){
+  var header=document.getElementById("site-header");
+  function onScroll(){
+    if(!header)return;
+    if(window.scrollY>24){header.classList.add("is-scrolled");}
+    else{header.classList.remove("is-scrolled");}
+  }
+  onScroll();
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+(function(){
+  var c=document.getElementById("cursor");
+  if(!c||window.matchMedia("(pointer:coarse)").matches)return;
+  var x=innerWidth/2,y=innerHeight/2,tx=x,ty=y,raf=0;
+  function lerp(a,b,t){return a+(b-a)*t}
+  function tick(){
+    x=lerp(x,tx,.2);y=lerp(y,ty,.2);
+    c.style.left=x+"px";c.style.top=y+"px";
+    raf=requestAnimationFrame(tick);
+  }
+  document.addEventListener("mousemove",function(e){
+    tx=e.clientX;ty=e.clientY;
+    c.classList.add("on");
+    if(!raf)raf=requestAnimationFrame(tick);
+  });
+  document.addEventListener("mouseleave",function(){c.classList.remove("on");});
+  function bind(sel,hoverClass){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.addEventListener("mouseenter",function(){c.classList.add(hoverClass||"hover");});
+      el.addEventListener("mouseleave",function(){c.classList.remove(hoverClass||"hover");});
+    });
+  }
+  bind("a,button,.btn","hover");
+  bind(".is-cta","cta");
+})();
+(function(){
+  var b=document.getElementById("burger");
+  var p=document.getElementById("mobile-panel");
+  if(!b||!p)return;
+  b.addEventListener("click",function(){
+    var open=!p.classList.contains("open");
+    p.classList.toggle("open",open);
+    p.hidden=!open;
+    b.setAttribute("aria-expanded",open);
+    b.setAttribute("aria-label",open?"Close menu":"Open menu");
+  });
+  p.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click",function(){
+      p.classList.remove("open");p.hidden=true;
+      b.setAttribute("aria-expanded","false");
+      b.setAttribute("aria-label","Open menu");
+    });
+  });
+})();
+(function(){
+  var slides=[].slice.call(document.querySelectorAll("#carousel .slide"));
+  var dots=document.getElementById("dots");
+  var i=0,timer;
+  if(!slides.length)return;
+  function show(idx){
+    slides.forEach(function(s,j){
+      var on=j===idx;
+      s.classList.toggle("active",on);
+      s.setAttribute("aria-hidden",on?"false":"true");
+    });
+    [].forEach.call(dots.querySelectorAll("button"),function(d,j){
+      d.setAttribute("aria-current",j===idx?"true":"false");
+    });
+    i=idx;
+  }
+  slides.forEach(function(_,idx){
+    var btn=document.createElement("button");
+    btn.type="button";
+    btn.setAttribute("role","tab");
+    btn.setAttribute("aria-label","Testimonial "+(idx+1));
+    btn.addEventListener("click",function(){show(idx);reset();});
+    dots.appendChild(btn);
+  });
+  show(0);
+  function next(){show((i+1)%slides.length);}
+  function reset(){clearInterval(timer);if(!window.matchMedia("(prefers-reduced-motion:reduce)").matches){timer=setInterval(next,5000);}}
+  reset();
+})();
+(function(){
+  var items=[].slice.call(document.querySelectorAll(".faq-item"));
+  items.forEach(function(it){
+    var q=it.querySelector(".faq-q");
+    var a=it.querySelector(".faq-a");
+    if(!q||!a)return;
+    q.addEventListener("click",function(){
+      var open=it.classList.contains("open");
+      items.forEach(function(o){o.classList.remove("open");o.querySelector(".faq-q").setAttribute("aria-expanded","false");});
+      if(!open){it.classList.add("open");q.setAttribute("aria-expanded","true");}
+    });
+  });
+})();
+(function(){
+  var m=document.getElementById("bill-month");
+  var y=document.getElementById("bill-year");
+  var price=document.getElementById("pro-price");
+  if(!m||!y||!price)return;
+  function setBilling(isYear){
+    m.setAttribute("aria-pressed",(!isYear).toString());
+    y.setAttribute("aria-pressed",isYear.toString());
+    if(isYear){
+      price.innerHTML='$397<span style="font-size:1rem;color:rgba(240,237,230,.45)">/yr</span>';
+    }else{
+      price.innerHTML='$57<span style="font-size:1rem;color:rgba(240,237,230,.45)">/mo</span>';
+    }
+  }
+  m.addEventListener("click",function(){setBilling(false);});
+  y.addEventListener("click",function(){setBilling(true);});
+})();
+(function(){
+  var logo=document.getElementById("logo");
+  if(!logo)return;
+  logo.addEventListener("click",function(e){
+    if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    e.preventDefault();
+    try{
+      var Ctx=window.AudioContext||window.webkitAudioContext;
+      if(!Ctx)return;
+      var ctx=new Ctx();
+      var t=ctx.currentTime;
+      function snap(){
+        var noise=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*0.06),ctx.sampleRate);
+        var d=noise.getChannelData(0);
+        for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*0.65;
+        var src=ctx.createBufferSource();
+        src.buffer=noise;
+        var bp=ctx.createBiquadFilter();
+        bp.type="bandpass";bp.frequency.value=1400;bp.Q.value=0.7;
+        var g=ctx.createGain();
+        g.gain.setValueAtTime(0.0001,t);
+        g.gain.exponentialRampToValueAtTime(0.35,t+0.002);
+        g.gain.exponentialRampToValueAtTime(0.0001,t+0.055);
+        src.connect(bp);bp.connect(g);g.connect(ctx.destination);
+        src.start(t);src.stop(t+0.07);
+      }
+      snap();setTimeout(function(){snap();},45);
+    }catch(err){}
+  });
+})();
+(function(){
+  var els=[].slice.call(document.querySelectorAll(".reveal"));
+  if(!els.length)return;
+  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){
+    els.forEach(function(el){el.classList.add("in");});
+    return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}
+    });
+  },{threshold:0.12,rootMargin:"0px 0px -6% 0px"});
+  els.forEach(function(el){io.observe(el);});
+})();
+(function(){
+  var started=false;
+  function run(){
+    if(started)return;started=true;
+    document.querySelectorAll(".stat-num").forEach(function(el){
+      var target=parseFloat(el.getAttribute("data-count"));
+      var dec=el.getAttribute("data-decimals");
+      var suffix=el.getAttribute("data-suffix")||"";
+      var prefix=el.getAttribute("data-prefix")||"";
+      var dur=1700;var t0=performance.now();
+      function ease(t){return 1-Math.pow(1-t,3)}
+      function fmt(val){
+        if(dec!=null)return prefix+val.toFixed(parseInt(dec,10))+suffix;
+        if(target>=1000)return prefix+Math.round(val).toLocaleString("en-US")+suffix;
+        return prefix+String(Math.round(val))+suffix;
+      }
+      function frame(now){
+        var p=Math.min(1,(now-t0)/dur);
+        var v=ease(p)*target;
+        el.textContent=fmt(v);
+        if(p<1)requestAnimationFrame(frame);
+        else el.textContent=fmt(target);
+      }
+      requestAnimationFrame(frame);
+    });
+  }
+  var sec=document.getElementById("results");
+  if(!sec)return;
+  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){
+    document.querySelectorAll(".stat-num").forEach(function(el){
+      var t=parseFloat(el.getAttribute("data-count"));
+      var dec=el.getAttribute("data-decimals");
+      var suffix=el.getAttribute("data-suffix")||"";
+      var prefix=el.getAttribute("data-prefix")||"";
+      if(dec!=null)el.textContent=prefix+t.toFixed(parseInt(dec,10))+suffix;
+      else if(t>=1000)el.textContent=prefix+Math.round(t).toLocaleString("en-US")+suffix;
+      else el.textContent=prefix+String(Math.round(t))+suffix;
+    });
+    return;
+  }
+  var io=new IntersectionObserver(function(e){
+    e.forEach(function(x){if(x.isIntersecting){run();io.disconnect();}});
+  },{threshold:0.25});
+  io.observe(sec);
+})();
+  </script>
+</body>
+</html>
